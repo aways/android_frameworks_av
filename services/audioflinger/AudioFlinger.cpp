@@ -9603,6 +9603,10 @@ status_t AudioFlinger::EffectModule::configure(bool isForLPA, int sampleRate, in
 
     // TODO: handle configuration of effects replacing track process
     audio_channel_mask_t channelMask = thread->channelMask();
+    if(popcount(channelMask) > 2) {
+        ALOGE("Error: Trying to apply effect on  %d channel content",popcount(channelMask));
+        return INVALID_OPERATION;
+    }
 #ifdef QCOM_HARDWARE
     mIsForLPA = isForLPA;
     if(isForLPA) {
