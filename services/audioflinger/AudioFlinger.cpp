@@ -9697,7 +9697,7 @@ status_t AudioFlinger::EffectModule::configure(bool isForLPA, int sampleRate, in
         p->vsize = sizeof(uint32_t);
         size = sizeof(int);
         int32_t d = VISUALIZER_PARAM_LATENCY;
-        memcpy(&p->data, &d, sizeof(int32_t)); // *(int32_t *)p->data = VISUALIZER_PARAM_LATENCY;
+        memcpy(&(p->data[0]), &d, sizeof(int32_t)); // *(int32_t *)p->data = VISUALIZER_PARAM_LATENCY;
 
         uint32_t latency = 0;
         PlaybackThread *pbt = thread->mAudioFlinger->checkPlaybackThread_l(thread->mId);
@@ -9705,7 +9705,7 @@ status_t AudioFlinger::EffectModule::configure(bool isForLPA, int sampleRate, in
             latency = pbt->latency_l();
         }
 
-        memcpy(&p->data + sizeof(int32_t), &latency, sizeof(uint32_t)); //*((int32_t *)p->data + 1)= latency;
+        memcpy(&(p->data[sizeof(int32_t)]), &latency, sizeof(uint32_t)); //*((int32_t *)p->data + 1) = latency;
         (*mEffectInterface)->command(mEffectInterface,
                                      EFFECT_CMD_SET_PARAM,
                                      sizeof(effect_param_t) + 8,
